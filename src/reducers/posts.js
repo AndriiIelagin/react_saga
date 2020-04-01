@@ -1,4 +1,4 @@
-import { CREATE_POST } from "../actions/types"
+import { CREATE_POST, FETCH_POSTS } from "../actions/types"
 
 const initialState = {
   posts: [],
@@ -9,7 +9,8 @@ export const posts = (state = initialState, action) => {
   switch(action.type) {
     case CREATE_POST:
       return { ...state, posts: [...state.posts, action.payload] }
-
+    case FETCH_POSTS:
+      return { ...state, fetchedPosts: action.payload }
     default:
       return state
   }
