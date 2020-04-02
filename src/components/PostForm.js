@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { v1 as uuid } from 'uuid'
 import { connect } from 'react-redux'
 
-import { createPost } from '../actions/posts'
+import Alert from './Alert'
+import { createPost, showAlert } from '../actions/actions'
 
 const initialState = {
   title: ''
@@ -19,7 +20,7 @@ class PostForm extends Component {
     const { title } = this.state;
 
     if(!title.trim()){
-      return
+      return this.props.showAlert('Post title could not be blank')
     }
 
     const newPost = { title, id: uuid() }
@@ -39,9 +40,11 @@ class PostForm extends Component {
   }
 
   render() {
-    const { title } = this.state;
+    const { title } = this.state
+    const { alert } = this.props
     return (
       <div>
+        {alert && <Alert text={alert}/>}
         <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
@@ -61,8 +64,12 @@ class PostForm extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  alert: state.app.alert
+})
+
 const mapDispatchToProps = {
-  createPost
+  createPost, showAlert
 }
 
-export default connect(null, mapDispatchToProps)(PostForm)
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm)
